@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trainer Details</title>
+</head>
+<body>
+    <h1 th:text="'Trainer: ' + ${trainer.name}">Trainer Name</h1>
+    <p th:text="'Specialty: ' + ${trainer.specialty}">Specialty</p>
+    <p th:text="'Gym: ' + ${trainer.gym.name}">Gym</p>
+
+    <a href="/">Back to Home</a>
+
+    <h2>Reviews</h2>
+    <ul>
+        <li th:each="review : ${trainer.reviews}">
+            <strong th:text="${review.reviewerName}">Reviewer</strong> -
+            <span th:text="'Rating: ' + ${review.rating} + '/5'">Rating</span><br>
+            <em th:text="${review.comment}">Comment</em>
+        </li>
+        <li th:if="${#lists.isEmpty(trainer.reviews)}">No reviews yet.</li>
+    </ul>
+
+    <h3>Add a Review</h3>
+    <form action="/review/add" method="post">
+        <input type="hidden" name="trainerId" th:value="${trainer.id}">
+
+        <label>Reviewer Name:</label>
+        <input type="text" name="reviewerName" required><br>
+
+        <label>Rating (1-5):</label>
+        <input type="number" name="rating" min="1" max="5" required><br>
+
+        <label>Comment:</label><br>
+        <textarea name="comment" rows="4" cols="50" required></textarea><br>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</body>
+</html>
