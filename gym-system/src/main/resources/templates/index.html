@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gym and Trainer System</title>
+</head>
+<body>
+    <h1>Gym and Trainer Information System</h1>
+
+    <h2>Add a New Gym</h2>
+    <form action="/gym/add" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" required><br>
+        <label>Address:</label>
+        <input type="text" name="address" required><br>
+        <button type="submit">Add Gym</button>
+    </form>
+
+    <h2>Add a New Trainer</h2>
+    <form action="/trainer/add" method="post">
+        <label>Name:</label>
+        <input type="text" name="name" required><br>
+        <label>Specialty:</label>
+        <input type="text" name="specialty" required><br>
+        <label>Gym:</label>
+        <select name="gymId" required>
+            <option th:each="gym : ${gyms}" th:value="${gym.id}" th:text="${gym.name}"></option>
+        </select><br>
+        <button type="submit">Add Trainer</button>
+    </form>
+
+    <h2>All Gyms and Trainers</h2>
+    <div th:each="gym : ${gyms}">
+        <h3 th:text="${gym.name}">Gym Name</h3>
+        <p th:text="'Address: ' + ${gym.address}">Gym Address</p>
+
+        <h4>Trainers:</h4>
+        <ul>
+            <li th:each="trainer : ${gym.trainers}">
+                <a th:href="@{/trainer/{id}(id=${trainer.id})}" th:text="${trainer.name} + ' (' + ${trainer.specialty} + ')'">Trainer Name</a>
+            </li>
+            <li th:if="${#lists.isEmpty(gym.trainers)}">No trainers listed yet.</li>
+        </ul>
+        <hr>
+    </div>
+
+</body>
+</html>
